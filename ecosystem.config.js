@@ -10,7 +10,7 @@ module.exports = {
   ],
   deploy: {
     production: {
-      user: 'node',
+      user: 'nodejs',
       host: 'meetup.demo.khan.io',
       ref: 'origin/master',
       repo: 'https://github.com/danielkhan/linkedin-meetup-sample',
