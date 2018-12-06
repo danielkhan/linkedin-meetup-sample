@@ -15,7 +15,7 @@ module.exports = {
       ref: 'origin/master',
       repo: 'https://github.com/danielkhan/linkedin-meetup-sample',
       path: '/home/nodejs/deploy',
-      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production',
+      'post-deploy': 'cp .env ./current npm install && pm2 startOrRestart ecosystem.config.js --env production',
     },
   },
 };
