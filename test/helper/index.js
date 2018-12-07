@@ -7,6 +7,7 @@ const UserModel = require('../../server/models/UserModel');
 
 let AvatarService = null;
 try {
+  // eslint-disable-next-line global-require
   AvatarService = require('../../server/services/AvatarService');
 } catch (err) {
   console.log('Avatars ignored');
