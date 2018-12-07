@@ -1,17 +1,33 @@
+/* eslint-disable global-require */
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
-const db = require('../../server/lib/db');
-const UserModel = require('../../server/models/UserModel');
-
 let AvatarService = null;
+let db = null;
+let UserModel = null;
+
 try {
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line import/no-unresolved
+  db = require('../../server/lib/db');
+} catch (err) {
+  console.log('db ignored');
+}
+
+try {
+  // eslint-disable-next-line import/no-unresolved
+  UserModel = require('../../server/models/UserModel');
+} catch (err) {
+  console.log('UserModel ignored');
+}
+
+try {
+  // eslint-disable-next-line import/no-unresolved
   AvatarService = require('../../server/services/AvatarService');
 } catch (err) {
   console.log('Avatars ignored');
 }
+
 const config = require('../../server/config').test;
 
 const fsReaddir = util.promisify(fs.readdir);
@@ -38,13 +54,19 @@ module.exports.validUser = {
 };
 
 module.exports.before = async () => {
-  await db.connect(config.database.dsn);
-  return UserModel.deleteMany({});
+  if (db) {
+    await db.connect(config.database.dsn);
+  }
+  if (UserModel) {
+    return UserModel.deleteMany({});
+  }
 };
 
 module.exports.after = async () => {
-  await UserModel.deleteMany({});
-  deleteFilesInDir(config.data.avatars);
+  if (UserModel) {
+    return UserModel.deleteMany({});
+  }
+  return deleteFilesInDir(config.data.avatars);
 };
 
 // Local helper function that creates a user

@@ -8,9 +8,19 @@ const app = require('../../server/app')(config);
 
 chai.use(chaiHttp);
 
+async function before() {
+  this.timeout = 5000;
+  helper.before();
+}
+
+async function after() {
+  this.timeout = 5000;
+  helper.after();
+}
+
 describe('The Application', () => {
-  beforeEach(async () => helper.before());
-  afterEach(async () => helper.after());
+  beforeEach(before);
+  afterEach(after);
   it('should have an index route', async () => {
     const res = await chai.request(app).get('/');
     res.should.have.status(200);
